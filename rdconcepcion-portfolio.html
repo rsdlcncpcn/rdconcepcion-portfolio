@@ -1,0 +1,1601 @@
+<!DOCTYPE html>
+<!--
+  ============================================================
+  ROSE'S PORTFOLIO: HOW THIS FILE IS ORGANIZED
+  ============================================================
+  Tip: press Ctrl+F (Cmd+F on Mac) and search "EDIT HERE" to jump to
+  the parts you will change most often.
+
+  1. The style block (near the top) = the design: colors, fonts, spacing.
+  2. The HOME page = the main element with id "home", made of 6 sections:
+     hero, about me, the work, tech stack, receipts (certificates), contact.
+  3. The other PAGES = the main elements with class "view": my story,
+     VA and tech support, education, pre-sales, web design.
+     They stay hidden until a link is clicked.
+  4. The script block (at the bottom) = the code for page switching,
+     tech stack tags, certificate list, and social links.
+
+  Files that must sit next to this file:
+    photo.jpg   = my photo
+    certs/      = certificate images (p01.jpg to p38.jpg)
+    sites/      = website screenshots (buildrite, rolin, newmika, coffeecentral)
+  If you rename a file or folder, change its name in this code too.
+-->
+<html lang="en">
+
+<head>
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+   <title>Rose Del S. Concepcion – Portfolio</title>
+   <meta name="description"
+      content="Portfolio of Rose Del S. Concepcion: IT, networking, cybersecurity, and web design.">
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link
+      href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,300;1,800&family=Share+Tech+Mono&display=swap"
+      rel="stylesheet">
+   <style>
+      /* COLORS. EDIT HERE: change these color codes to restyle the whole site.
+   --pink is the accent color. --pkbg/--stk are the work and tech stack backgrounds in light mode.
+   The darker values for dark mode are in the next two blocks below. */
+      :root {
+         --paper: #F4F2EE;
+         --gridc: rgba(90, 170, 220, .28);
+         --text: #111;
+         --pink: #FB62D8;
+         --green: #0FA24A;
+         --card: #fff;
+         --pkbg: #FFCBEF;
+         --pkend: #E4F2FC;
+         --stk: #E4F2FC;
+         --stkline: rgba(70, 140, 200, .22);
+         --stktext: #111;
+         box-sizing: border-box;
+         padding-top: env(safe-area-inset-top, 0px);
+         padding-bottom: env(safe-area-inset-bottom, 0px)
+      }
+
+      @media (prefers-color-scheme:dark) {
+         :root:not([data-theme="light"]) {
+            --paper: #15151C;
+            --gridc: rgba(140, 190, 255, .14);
+            --text: #F1EEF8;
+            --card: #23232E;
+            --pkbg: #FB62D8;
+            --pkend: #000;
+            --stk: #000;
+            --stkline: rgba(255, 255, 255, .18);
+            --stktext: #fff;
+            color-scheme: dark
+         }
+      }
+
+      :root[data-theme="dark"] {
+         --paper: #15151C;
+         --gridc: rgba(140, 190, 255, .14);
+         --text: #F1EEF8;
+         --card: #23232E;
+         --pkbg: #FB62D8;
+         --pkend: #000;
+         --stk: #000;
+         --stkline: rgba(255, 255, 255, .18);
+         --stktext: #fff;
+         color-scheme: dark
+      }
+
+      * {
+         box-sizing: border-box
+      }
+
+      html {
+         scroll-behavior: smooth
+      }
+
+      body {
+         margin: 0;
+         background: var(--paper);
+         color: var(--text);
+         font: 400 15px/1.9 "Share Tech Mono", ui-monospace, Menlo, monospace;
+         text-transform: uppercase;
+         letter-spacing: .04em
+      }
+
+      a {
+         color: inherit
+      }
+
+      a:focus-visible,
+      button:focus-visible {
+         outline: 3px solid var(--pink);
+         outline-offset: 3px
+      }
+
+      [hidden] {
+         display: none !important
+      }
+
+      h1,
+      h2,
+      h3 {
+         font-family: "Barlow Condensed", "Arial Narrow", Arial, sans-serif;
+         font-weight: 300;
+         line-height: .95;
+         margin: 0;
+         text-transform: lowercase;
+         letter-spacing: -.02em
+      }
+
+      h1 b,
+      h2 b {
+         font-weight: 800;
+         font-style: italic;
+         display: block
+      }
+
+      .sec {
+         position: relative;
+         overflow: hidden;
+         padding: 90px 6vw
+      }
+
+      .grid {
+         background-color: var(--paper);
+         background-image: linear-gradient(var(--gridc) 1px, transparent 1px), linear-gradient(90deg, var(--gridc) 1px, transparent 1px);
+         background-size: 40px 40px
+      }
+
+      .s {
+         position: absolute;
+         line-height: 1;
+         transform: rotate(var(--r, 0deg));
+         filter: drop-shadow(3px 0 0 #fff) drop-shadow(-3px 0 0 #fff) drop-shadow(0 3px 0 #fff) drop-shadow(0 -3px 0 #fff) drop-shadow(0 8px 8px rgba(0, 0, 0, .25));
+         user-select: none;
+         pointer-events: none
+      }
+
+      .top {
+         position: absolute;
+         top: 22px;
+         left: 6vw;
+         right: 6vw;
+         display: flex;
+         justify-content: space-between;
+         gap: 16px;
+         flex-wrap: wrap;
+         z-index: 3;
+         font-size: 14px;
+         line-height: 1.6
+      }
+
+      .top a {
+         text-decoration: none;
+         margin-left: 18px
+      }
+
+      .top a:hover {
+         text-decoration: underline
+      }
+
+      /* HERO: the first screen with the sticker emojis and "welcome to my portfolio" */
+      .hero {
+         min-height: 100vh;
+         min-height: 100svh
+      }
+
+      .hero p {
+         position: absolute;
+         left: 6vw;
+         bottom: 64px;
+         max-width: 330px;
+         margin: 0;
+         z-index: 2
+      }
+
+      .hero h1 {
+         position: absolute;
+         right: 6vw;
+         bottom: 56px;
+         font-size: clamp(46px, 8.5vw, 110px);
+         text-align: right;
+         z-index: 2
+      }
+
+      .em {
+         font-size: .7em;
+         font-style: normal
+      }
+
+      /* ABOUT ME section (text on the left, photo on the right) */
+      .about {
+         display: grid;
+         grid-template-columns: 1.1fr 1fr;
+         gap: 6vw;
+         align-items: center;
+         background-image: linear-gradient(var(--gridc) 1px, transparent 1px), linear-gradient(90deg, var(--gridc) 1px, transparent 1px), linear-gradient(180deg, transparent 55%, var(--pkbg));
+         background-size: 40px 40px, 40px 40px, 100% 100%;
+         padding-bottom: 140px
+      }
+
+      .about h2,
+      .big {
+         font-size: clamp(44px, 7vw, 88px);
+         margin-bottom: 28px
+      }
+
+      .about p {
+         max-width: 440px;
+         margin: 0 0 14px
+      }
+
+      .photo {
+         position: relative;
+         background: var(--green);
+         border-radius: 6px;
+         aspect-ratio: 4/5;
+         display: grid;
+         place-items: center;
+         font-size: 130px;
+         max-width: 430px;
+         justify-self: end;
+         width: 100%
+      }
+
+      .pin {
+         position: absolute;
+         top: -18px;
+         right: -18px;
+         background: #EBDDB5;
+         color: #222;
+         border: 3px solid #E0388F;
+         padding: 2px 10px;
+         font-size: 13px;
+         line-height: 1.5;
+         transform: rotate(6deg);
+         box-shadow: 0 4px 8px rgba(0, 0, 0, .3)
+      }
+
+      /* THE WORK section: pink background and the four clickable cards */
+      .pinkbg {
+         background: linear-gradient(180deg, var(--pkbg) 85%, var(--pkend));
+         color: #111;
+         padding-bottom: 170px
+      }
+
+      .pinkbg .big {
+         text-align: right;
+         margin-bottom: 50px
+      }
+
+      .cards {
+         display: grid;
+         grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+         gap: 34px;
+         position: relative;
+         z-index: 2;
+         max-width: 1100px;
+         margin: 0 auto
+      }
+
+      .card {
+         display: block;
+         background: #fff;
+         color: #111;
+         padding: 20px 20px 24px;
+         text-decoration: none;
+         box-shadow: 0 10px 22px rgba(0, 0, 0, .3);
+         transform: rotate(var(--r, 0deg));
+         transition: transform .25s
+      }
+
+      .card:nth-child(1) {
+         --r: -2deg
+      }
+
+      .card:nth-child(2) {
+         --r: 1.5deg
+      }
+
+      .card:nth-child(3) {
+         --r: -1deg
+      }
+
+      .card:nth-child(4) {
+         --r: 2deg
+      }
+
+      .card:hover,
+      .card:focus-visible {
+         transform: rotate(0) translateY(-8px) scale(1.03)
+      }
+
+      .card .ic {
+         font-size: 56px;
+         line-height: 1.2
+      }
+
+      .card h3 {
+         font-size: 34px;
+         font-weight: 800;
+         font-style: italic;
+         margin: 6px 0
+      }
+
+      .card p {
+         margin: 0 0 10px;
+         line-height: 1.6;
+         font-size: 14px
+      }
+
+      .card u {
+         background: var(--pink);
+         text-decoration: none;
+         padding: 0 8px
+      }
+
+      /* TECH STACK section (pale blue in light mode, black in dark mode) */
+      .dark {
+         background-color: var(--stk);
+         background-image: linear-gradient(var(--stkline) 1px, transparent 1px), linear-gradient(90deg, var(--stkline) 1px, transparent 1px);
+         background-size: 40px 40px, 40px 40px, 100% 100%;
+         color: var(--stktext);
+         padding-bottom: 110px
+      }
+
+      .in {
+         max-width: 980px;
+         margin: 0 auto;
+         position: relative;
+         z-index: 2
+      }
+
+      .dark h2 {
+         font-size: clamp(44px, 7vw, 88px);
+         margin-bottom: 12px
+      }
+
+      .dark .lead {
+         margin: 0 0 22px;
+         max-width: 520px
+      }
+
+      .tabs {
+         display: flex;
+         flex-wrap: wrap;
+         gap: 10px;
+         margin-bottom: 24px
+      }
+
+      .tabs button {
+         font: inherit;
+         text-transform: uppercase;
+         letter-spacing: inherit;
+         background: transparent;
+         color: var(--stktext);
+         border: 2px solid var(--stktext);
+         border-radius: 999px;
+         padding: 2px 16px;
+         cursor: pointer
+      }
+
+      .tabs button[aria-pressed="true"] {
+         background: var(--pink);
+         border-color: var(--pink);
+         color: #000
+      }
+
+      .chips {
+         display: flex;
+         flex-wrap: wrap;
+         gap: 12px;
+         min-height: 110px;
+         margin-bottom: 70px
+      }
+
+      .chip {
+         background: #fff;
+         color: #111;
+         padding: 2px 14px;
+         border-radius: 4px;
+         transform: rotate(var(--r, 0deg));
+         box-shadow: 0 5px 10px rgba(0, 0, 0, .5);
+         animation: pop .4s both
+      }
+
+      @keyframes pop {
+         from {
+            opacity: 0;
+            transform: scale(.4) rotate(0)
+         }
+      }
+
+      .badges {
+         display: grid;
+         grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+         gap: 26px 16px
+      }
+
+      .bd {
+         display: block;
+         text-align: center;
+         color: #fff;
+         text-decoration: none;
+         line-height: 1.4;
+         font-size: 13px;
+         animation: pop .4s both
+      }
+
+      .hex {
+         width: 112px;
+         height: 128px;
+         margin: 0 auto 8px;
+         display: grid;
+         place-items: center;
+         font-size: 46px;
+         clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+         background: var(--c);
+         transition: transform .25s
+      }
+
+      a.bd:hover .hex,
+      .bd:hover .hex {
+         transform: rotate(8deg) scale(1.1)
+      }
+
+      .bd small {
+         display: block;
+         color: #E8D8F0
+      }
+
+      .bd em {
+         font-style: normal;
+         background: var(--pink);
+         color: #000;
+         padding: 0 8px
+      }
+
+      .end {
+         background: var(--pkbg);
+         color: #111;
+         text-align: center;
+         padding: 60px 6vw 80px;
+         border-top: 3px dashed #111
+      }
+
+      /* RECEIPTS section (certificates): lavender background with a dashed "cut here" line */
+      .rec {
+         background-color: #EAE6FA;
+         background-image: linear-gradient(rgba(110, 90, 200, .2) 1px, transparent 1px), linear-gradient(90deg, rgba(110, 90, 200, .2) 1px, transparent 1px);
+         background-size: 40px 40px;
+         padding-bottom: 120px;
+         border-top: 3px dashed var(--text)
+      }
+
+      @media (prefers-color-scheme:dark) {
+         :root:not([data-theme="light"]) .rec {
+            background-color: #1C1932
+         }
+      }
+
+      :root[data-theme="dark"] .rec {
+         background-color: #1C1932
+      }
+
+      .cut {
+         position: absolute;
+         top: -2px;
+         left: 6vw;
+         font-size: 26px;
+         line-height: 1;
+         transform: translateY(-50%);
+         z-index: 3
+      }
+
+      .sec.rec,
+      .sec.end {
+         overflow: visible
+      }
+
+      .rec h2 {
+         font-size: clamp(44px, 7vw, 88px);
+         margin-bottom: 12px
+      }
+
+      .rec .tabs button {
+         color: var(--text);
+         border-color: var(--text)
+      }
+
+      .rec .tabs button[aria-pressed="true"] {
+         color: #000;
+         border-color: var(--pink)
+      }
+
+      .rec .bd {
+         color: var(--text)
+      }
+
+      .rec .bd small {
+         color: var(--text);
+         opacity: .65
+      }
+
+      .soc {
+         display: flex;
+         flex-wrap: wrap;
+         gap: 10px;
+         margin: 16px 0 0
+      }
+
+      .soc a {
+         background: #fff;
+         color: #111;
+         text-decoration: none;
+         padding: 0 14px;
+         border: 2px solid #111;
+         box-shadow: 3px 3px 0 var(--pink)
+      }
+
+      .soc a:hover {
+         background: var(--pink)
+      }
+
+      .btn {
+         display: inline-block;
+         margin-top: 14px;
+         background: var(--pink);
+         color: #000;
+         text-decoration: none;
+         padding: 0 14px
+      }
+
+      .end h2 {
+         font-size: clamp(44px, 7vw, 88px);
+         margin-bottom: 14px
+      }
+
+      .mail {
+         display: inline-block;
+         font-size: clamp(16px, 3.4vw, 28px);
+         word-break: break-all
+      }
+
+      /* PAGES: the extra pages that open from the work cards and the About button */
+      .view {
+         min-height: 100vh;
+         padding: 80px 6vw 110px
+      }
+
+      .view .in {
+         max-width: 920px
+      }
+
+      .back {
+         display: inline-block;
+         margin-bottom: 34px;
+         text-decoration: none;
+         background: var(--pink);
+         color: #000;
+         padding: 0 14px
+      }
+
+      .view .big {
+         margin-bottom: 12px
+      }
+
+      .view .lead {
+         max-width: 600px;
+         margin: 0 0 36px
+      }
+
+      .steps {
+         display: flex;
+         flex-wrap: wrap;
+         gap: 10px 8px;
+         align-items: center;
+         margin: 0 0 40px;
+         padding: 0;
+         list-style: none
+      }
+
+      .steps li {
+         background: #fff;
+         color: #111;
+         padding: 2px 14px;
+         box-shadow: 0 5px 10px rgba(0, 0, 0, .2)
+      }
+
+      .steps li+li:before {
+         content: "→ ";
+         margin-left: -4px
+      }
+
+      .stat {
+         display: inline-block;
+         background: var(--pink);
+         color: #000;
+         padding: 10px 22px;
+         transform: rotate(-2deg);
+         margin: 0 0 40px
+      }
+
+      .stat b {
+         font: 800 italic 56px/1 "Barlow Condensed", sans-serif;
+         display: block
+      }
+
+      .two {
+         display: grid;
+         grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+         gap: 30px
+      }
+
+      .box {
+         background: var(--card);
+         border: 2px solid var(--text);
+         padding: 6px 22px 14px;
+         box-shadow: 8px 8px 0 var(--pink)
+      }
+
+      .box h3 {
+         font-size: 30px;
+         font-weight: 800;
+         font-style: italic;
+         margin: 14px 0 6px
+      }
+
+      .box ul {
+         margin: 0;
+         padding-left: 18px;
+         line-height: 1.8
+      }
+
+      /* WEB DESIGN page: the browser-window boxes that hold the website screenshots */
+      .win {
+         background: var(--card);
+         border: 2px solid var(--text);
+         box-shadow: 8px 8px 0 var(--pink);
+         display: flex;
+         flex-direction: column
+      }
+
+      .win .bar {
+         display: flex;
+         gap: 6px;
+         align-items: center;
+         padding: 6px 12px;
+         border-bottom: 2px solid var(--text);
+         font-size: 12px;
+         line-height: 1.4
+      }
+
+      .win .bar i {
+         width: 10px;
+         height: 10px;
+         border-radius: 50%;
+         background: var(--c1, #FF5F57)
+      }
+
+      .win .bar span {
+         margin-left: 8px;
+         opacity: .7
+      }
+
+      .win .scr {
+         height: 130px;
+         display: grid;
+         place-items: center;
+         background: var(--g);
+         color: #fff;
+         font: 800 italic 34px/1 "Barlow Condensed", sans-serif;
+         text-transform: lowercase;
+         text-align: center;
+         padding: 10px
+      }
+
+      .win .tx {
+         padding: 6px 18px 16px
+      }
+
+      .win .tx p {
+         margin: 6px 0;
+         line-height: 1.6;
+         font-size: 14px
+      }
+
+      .win .tx a {
+         background: var(--pink);
+         color: #000;
+         text-decoration: none;
+         padding: 0 10px
+      }
+
+      .tl {
+         border-left: 3px solid var(--pink);
+         margin: 0 0 0 8px;
+         padding-left: 28px
+      }
+
+      .tl .it {
+         position: relative;
+         margin-bottom: 34px
+      }
+
+      .tl .it:before {
+         content: "";
+         position: absolute;
+         left: -39px;
+         top: 10px;
+         width: 16px;
+         height: 16px;
+         border-radius: 50%;
+         background: var(--pink);
+         border: 3px solid var(--paper)
+      }
+
+      .tl h3 {
+         font-size: 34px;
+         font-weight: 800;
+         font-style: italic
+      }
+
+      .tl p {
+         margin: 4px 0;
+         line-height: 1.6
+      }
+
+      /* MY STORY page: the polaroid and text cards */
+      .story {
+         display: grid;
+         gap: 44px;
+         margin-top: 50px
+      }
+
+      .ch {
+         display: flex;
+         gap: 30px;
+         align-items: center
+      }
+
+      .ch:nth-child(even) {
+         flex-direction: row-reverse
+      }
+
+      .pol {
+         flex: 0 0 190px;
+         background: #fff;
+         color: #111;
+         padding: 16px 16px 10px;
+         text-align: center;
+         font-size: 84px;
+         line-height: 1.2;
+         box-shadow: 0 10px 22px rgba(0, 0, 0, .25);
+         transform: rotate(-3deg);
+         transition: transform .3s
+      }
+
+      .ch:nth-child(even) .pol {
+         transform: rotate(3deg)
+      }
+
+      .ch:hover .pol {
+         transform: rotate(0) scale(1.05)
+      }
+
+      .pol small {
+         display: block;
+         font-size: 12px;
+         line-height: 1.6
+      }
+
+      .ch .tx {
+         flex: 1;
+         background: var(--card);
+         border: 2px solid var(--text);
+         box-shadow: 8px 8px 0 var(--pink);
+         padding: 6px 24px 16px
+      }
+
+      .ch .tx h3 {
+         font-size: 34px;
+         font-weight: 800;
+         font-style: italic;
+         margin: 12px 0 4px
+      }
+
+      .ch .tx p {
+         margin: 6px 0;
+         line-height: 1.7
+      }
+
+      .st {
+         list-style: none;
+         padding: 0;
+         margin: 8px 0 0;
+         line-height: 1.9
+      }
+
+      .st b {
+         background: var(--pink);
+         color: #000;
+         font-weight: 400;
+         padding: 0 10px;
+         margin-right: 8px
+      }
+
+      @media (max-width:700px) {
+
+         .ch,
+         .ch:nth-child(even) {
+            flex-direction: column;
+            align-items: stretch
+         }
+
+         .pol {
+            flex: none;
+            align-self: flex-start
+         }
+      }
+
+      /* MOBILE: these rules only apply on screens narrower than 800px (phones) */
+      @media (max-width:800px) {
+         .about {
+            grid-template-columns: 1fr
+         }
+
+         .photo {
+            justify-self: center;
+            font-size: 100px
+         }
+
+         .hero p {
+            bottom: 150px
+         }
+
+         .hero h1 {
+            left: 6vw;
+            text-align: left
+         }
+
+         .s {
+            font-size: min(var(--fs, 80px), 11vw) !important
+         }
+
+         .hide {
+            display: none
+         }
+
+         .pinkbg .big {
+            text-align: left
+         }
+      }
+
+      @media (prefers-reduced-motion:reduce) {
+         html {
+            scroll-behavior: auto
+         }
+
+         .chip,
+         .bd {
+            animation: none
+         }
+
+         .card,
+         .hex {
+            transition: none
+         }
+      }
+
+      /* PHOTO: the tilted polaroid frame around photo.jpg */
+      .photo {
+         background: #fff;
+         padding: 10px 10px 0;
+         aspect-ratio: auto;
+         transform: rotate(2deg);
+         box-shadow: 0 12px 26px rgba(0, 0, 0, .3);
+         display: block;
+         font-size: inherit;
+         line-height: 1.4;
+         color: #111;
+         text-transform: none
+      }
+
+      .photo img {
+         display: block;
+         width: 100%;
+         height: auto;
+         aspect-ratio: 4/5;
+         object-fit: cover
+      }
+
+      .photo small {
+         display: block;
+         padding: 10px 0 12px;
+         text-align: center;
+         color: #111;
+         font-size: 14px
+      }
+
+      @media (max-width:1150px) {
+         .dark .s {
+            display: none
+         }
+      }
+
+      button.bd {
+         background: none;
+         border: 0;
+         font: inherit;
+         text-transform: inherit;
+         letter-spacing: inherit;
+         cursor: pointer;
+         padding: 0;
+         color: var(--text);
+         width: 100%
+      }
+
+      .bd span {
+         display: -webkit-box;
+         -webkit-line-clamp: 3;
+         -webkit-box-orient: vertical;
+         overflow: hidden
+      }
+
+      /* CERTIFICATE POPUP: the box that opens when a receipt line is clicked */
+      dialog {
+         border: 3px solid var(--text);
+         background: var(--card);
+         color: var(--text);
+         padding: 0;
+         max-width: min(700px, 94vw);
+         width: 100%;
+         box-shadow: 10px 10px 0 var(--pink);
+         font: inherit;
+         text-transform: uppercase;
+         letter-spacing: .04em;
+         max-height: 92vh;
+         overflow: auto
+      }
+
+      dialog::backdrop {
+         background: rgba(0, 0, 0, .65)
+      }
+
+      .dl {
+         padding: 18px 22px 22px
+      }
+
+      .dl img {
+         width: 100%;
+         height: auto;
+         display: block;
+         border: 2px solid var(--text);
+         background: #fff;
+         margin-bottom: 14px
+      }
+
+      .dl h3 {
+         font-size: 30px;
+         font-weight: 800;
+         font-style: italic;
+         margin-bottom: 4px
+      }
+
+      .dl p {
+         margin: 2px 0;
+         line-height: 1.6;
+         font-size: 14px;
+         word-break: break-word
+      }
+
+      .dl .row,
+      .dl .lk {
+         display: flex;
+         gap: 10px;
+         flex-wrap: wrap;
+         margin-top: 14px
+      }
+
+      .dl .vb {
+         background: var(--pink);
+         color: #000;
+         text-decoration: none;
+         padding: 0 16px;
+         border: 2px solid #000
+      }
+
+      .dl .vb:hover,
+      .dl .vb:focus-visible {
+         background: #fff
+      }
+
+      .dl .no {
+         opacity: .75
+      }
+
+      .dl button.x {
+         font: inherit;
+         text-transform: uppercase;
+         background: transparent;
+         color: var(--text);
+         border: 2px solid var(--text);
+         padding: 0 14px;
+         cursor: pointer
+      }
+
+      /* The receipt paper: each certificate is one line (.rw) */
+      .rec .badges {
+         display: block;
+         max-width: 620px;
+         margin: 8px auto 0;
+         background: var(--card);
+         color: var(--text);
+         padding: 22px 24px 18px;
+         box-shadow: 0 14px 30px rgba(0, 0, 0, .18);
+         border-top: 3px dashed var(--text);
+         border-bottom: 3px dashed var(--text);
+         text-transform: none;
+         font-size: 14px;
+         line-height: 1.5
+      }
+
+      .rh {
+         display: flex;
+         justify-content: space-between;
+         gap: 12px;
+         border-bottom: 2px dashed var(--text);
+         padding-bottom: 10px;
+         margin-bottom: 6px;
+         text-transform: uppercase;
+         font-size: 13px
+      }
+
+      .rg {
+         margin: 16px 0 4px;
+         text-transform: uppercase;
+         font-size: 12px;
+         letter-spacing: .14em;
+         opacity: .65
+      }
+
+      .rw {
+         display: flex;
+         justify-content: space-between;
+         align-items: baseline;
+         gap: 14px;
+         width: 100%;
+         background: none;
+         border: 0;
+         border-bottom: 1px dotted rgba(127, 127, 127, .55);
+         font: inherit;
+         color: inherit;
+         text-align: left;
+         padding: 7px 4px;
+         cursor: pointer;
+         text-transform: none;
+         letter-spacing: inherit
+      }
+
+      .rw:hover,
+      .rw:focus-visible {
+         background: var(--pink);
+         color: #000
+      }
+
+      .rt {
+         flex: 1
+      }
+
+      .rt small {
+         display: block;
+         opacity: .65;
+         font-size: 12px
+      }
+
+      .rd {
+         white-space: nowrap;
+         font-size: 13px
+      }
+
+      .rf {
+         display: flex;
+         flex-direction: column;
+         align-items: center;
+         gap: 8px;
+         margin-top: 18px;
+         font-size: 12px;
+         text-transform: uppercase
+      }
+
+      .bc {
+         display: block;
+         width: 80%;
+         height: 42px;
+         background: repeating-linear-gradient(90deg, var(--text) 0 2px, transparent 2px 5px, var(--text) 5px 6px, transparent 6px 9px, var(--text) 9px 12px, transparent 12px 14px)
+      }
+
+      .rec .tabs {
+         gap: 6px 18px;
+         justify-content: center;
+         margin-bottom: 22px
+      }
+
+      .rec .tabs button {
+         border: 0;
+         border-bottom: 2px solid transparent;
+         border-radius: 0;
+         padding: 0 2px;
+         background: none
+      }
+
+      .rec .tabs button[aria-pressed="true"] {
+         background: none;
+         color: var(--text);
+         border-bottom-color: var(--pink)
+      }
+
+      .win .scr {
+         height: auto;
+         display: block;
+         padding: 0;
+         background: none
+      }
+
+      .win .scr img {
+         display: block;
+         width: 100%;
+         height: auto;
+         border-bottom: 2px solid var(--text)
+      }
+
+      .wkh {
+         display: flex;
+         justify-content: space-between;
+         align-items: flex-end;
+         gap: 18px 24px;
+         flex-wrap: wrap;
+         margin: 0 auto 50px;
+         max-width: 1100px;
+         position: relative;
+         z-index: 2
+      }
+
+      .wkh .big {
+         margin-bottom: 0
+      }
+
+      .cap {
+         max-width: 340px;
+         margin: 0;
+         color: #111
+      }
+   </style>
+</head>
+
+<body>
+   <!-- ================= HOME PAGE (everything you see first) ================= -->
+   <main id="home">
+      <!-- 1. HERO: top bar, nav links and the sticker emojis. EDIT HERE: change the tagline in the <p> and the heading in the <h1>. -->
+      <section class="sec grid hero">
+         <div class="top"><span>Rose Del S. Concepcion</span>
+            <nav><a href="#about">About</a><a href="#work">Work</a><a href="#stack">Stack</a><a
+                  href="#certs">Certs</a><a href="#contact">Contact</a></nav>
+         </div>
+         <span class="s" style="top:14%;left:8%;--r:-8deg;font-size:70px">🐚</span>
+         <span class="s" style="top:26%;left:20%;--r:6deg;font-size:80px">🍎</span>
+         <span class="s" style="top:10%;left:36%;--r:20deg;font-size:70px">🐈‍⬛</span>
+         <span class="s hide" style="top:22%;left:56%;--r:-4deg;font-size:90px">📡</span>
+         <span class="s" style="top:12%;right:12%;--r:10deg;font-size:70px">🔒</span>
+         <span class="s" style="top:46%;left:7%;--r:-6deg;font-size:90px">🐕</span>
+         <span class="s hide" style="top:50%;left:30%;--r:5deg;font-size:80px">🧾</span>
+         <span class="s" style="top:38%;right:24%;--r:8deg;font-size:80px">🔑</span>
+         <span class="s" style="top:34%;right:7%;--r:-3deg;font-size:90px">📓</span>
+         <p>A digitized collection of the networks, websites, and certifications that live rent-free in my mind.</p>
+         <h1>welcome to my <b>portfolio <span class="em">💻</span></b></h1>
+      </section>
+
+      <!-- 2. ABOUT ME. EDIT HERE: the three short <p> lines. The social buttons are filled in automatically by the script at the bottom. -->
+      <section class="sec about" id="intro">
+         <div>
+            <h2 class="big">about <b>me 😺</b></h2>
+            <p>hey! I’m Rose. I do IT things. A lot of them. Networks, websites, security, and a growing pile of badges.
+            </p>
+            <p>Usually on purpose. Sometimes after my third Google search. I like learning new tools, hiking, running,
+               and double-checking everything twice.</p>
+            <p>This site is my receipts, my work, and slightly too many emojis. Currently looking for my next IT
+               adventure.</p>
+            <div class="soc" id="soc1"></div><a class="btn" href="#about">read my story →</a>
+         </div>
+         <!-- PHOTO. To change it, replace photo.jpg (same file name). The <small> is the caption. -->
+         <div class="photo"><img src="photo.jpg"
+               alt="Rose smiling, holding her small black dog in a yellow shirt"><small>that’s me 👋</small><span
+               class="pin">Cum Laude</span></div>
+      </section>
+
+      <!-- 3. THE WORK: four cards. Each href="#something" opens the page with the matching id (v-something) lower down. -->
+      <section class="sec pinkbg" id="work">
+         <!-- Heading plus a short description. EDIT HERE: change the text inside the p tag. -->
+         <div class="wkh">
+            <p class="cap">A tour of what I’ve built, designed, and learned: networks, websites, school, and what’s
+               next. Tap a card to step inside.</p>
+            <h2 class="big">the <b>work 🔥</b></h2>
+         </div>
+         <div class="cards">
+            <a class="card" href="#presales">
+               <div class="ic">📡</div>
+               <h3>pre-sales</h3>
+               <p>Technical Pre-Sales Engineer at Pronet, 2024–2026. Turned client needs into network and ICT solutions.
+               </p><u>see what I do →</u>
+            </a>
+            <a class="card" href="#webdesign">
+               <div class="ic">🖥️</div>
+               <h3>web design</h3>
+               <p>Four business websites built at Lexton with WordPress, WooCommerce, and Elementor.</p><u>see the sites
+                  →</u>
+            </a>
+            <a class="card" href="#education">
+               <div class="ic">🎓</div>
+               <h3>education</h3>
+               <p>BS Information Technology, Cum Laude, plus my academic projects on GitHub.</p><u>see the journey →</u>
+            </a>
+            <a class="card" href="#va">
+               <div class="ic">💬</div>
+               <h3>VA and tech support</h3>
+               <p>Exploring virtual assistance and tech support as my next chapter.</p><u>see what’s next →</u>
+            </a>
+         </div>
+      </section>
+
+      <!-- 4. TECH STACK: sticker emojis and the category tabs. The tags themselves come from the ST list in the script. -->
+      <section class="sec dark" id="stack">
+         <span class="s" style="top:10%;left:2%;--r:-4deg;font-size:64px">🎧</span><span class="s"
+            style="top:12%;right:2%;--r:4deg;font-size:56px">🍬</span><span class="s"
+            style="bottom:14%;left:2%;--r:3deg;font-size:64px">☕</span><span class="s"
+            style="bottom:12%;right:2%;--r:-3deg;font-size:56px">⭐</span>
+         <div class="in">
+            <h2>tech <b>stack 😜</b></h2>
+
+            <p class="lead">Pick a category. These come from my certifications and training.</p>
+            <div class="tabs" id="tabs"></div>
+            <div class="chips" id="chips" aria-live="polite"></div>
+         </div>
+      </section>
+      <!-- 5. RECEIPTS: the certificate list is built by the script from the C list. Do not type certificates here. -->
+      <section class="sec rec" id="certs"><span class="cut">✂️</span>
+         <div class="in">
+            <h2>the <b>receipts 🧾</b></h2>
+            <p class="lead">Tap a line to open the certificate. ✓ means the issuer has a public verification link.</p>
+            <div class="tabs" id="btabs"></div>
+            <div class="badges" id="badges"></div>
+         </div>
+      </section>
+
+      <!-- 6. CONTACT. EDIT HERE: change the email address in the mailto link. -->
+      <section class="sec end" id="contact"><span class="cut">✂️</span>
+         <h2>let’s <b>talk 📬</b></h2>
+         <p>Open to entry- to mid-level IT roles.</p>
+         <a class="mail" href="mailto:rsdlcncpcn@gmail.com">rsdlcncpcn@gmail.com</a>
+         <div class="soc" id="soc3" style="justify-content:center"></div>
+      </section>
+   </main>
+
+   <!-- PAGE: PRE-SALES (Pronet) -->
+   <main class="view sec grid" id="v-presales" hidden>
+      <div class="in">
+         <a class="back" href="#home">← back to portfolio</a>
+         <h2 class="big">pre-sales <b>engineer 📡</b></h2>
+         <p class="lead">Pronet Systems Integrated Network Solution, Inc. | Oct 2024 – Oct 2026. Two years of technical
+            solutioning across networking and security projects. I turned what a client needed into a solution they
+            could buy, build, and trust.</p>
+         <div class="stat"><b>80–95%</b>approximate project win rate</div>
+         <h3 style="font-size:34px;margin-bottom:14px">how a project goes</h3>
+         <ol class="steps">
+            <li>Understand requirements</li>
+            <li>Site survey</li>
+            <li>Design the architecture</li>
+            <li>Specs and BOM</li>
+            <li>Bid proposal</li>
+            <li>Work with engineering and suppliers</li>
+         </ol>
+         <div class="two">
+            <div class="box">
+               <h3>what I did</h3>
+               <ul>
+                  <li>Design network architectures (switching, Wi-Fi, data center)</li>
+                  <li>Conduct site surveys</li>
+                  <li>Prepare accurate technical specifications, BOMs, and bid proposals</li>
+                  <li>Validate solutions with engineering teams and suppliers</li>
+               </ul>
+            </div>
+            <div class="box">
+               <h3>what I proposed</h3>
+               <ul>
+                  <li>CCTV and access control</li>
+                  <li>Wi-Fi and network infrastructure</li>
+                  <li>Data centers</li>
+                  <li>LED walls and PA systems</li>
+                  <li>PABX and tactical radios</li>
+               </ul>
+            </div>
+         </div>
+      </div>
+   </main>
+
+   <!-- PAGE: WEB DESIGN. Each .win box is one website. The screenshot is in sites/ and the link opens the live site. -->
+   <main class="view sec grid" id="v-webdesign" hidden>
+      <div class="in">
+         <a class="back" href="#home">← back to portfolio</a>
+         <h2 class="big">web <b>design 🖥️</b></h2>
+         <p class="lead">Lexton Commercial Marketing Corporation | Feb – Oct 2024. I started as an intern and was
+            absorbed into the company because of the projects I contributed to: four business websites (two live, two
+            still in staging), built with WordPress, WooCommerce, and Elementor, with PHP, JavaScript, and HTML/CSS
+            customization.</p>
+         <div class="two">
+            <div class="win" style="--g:linear-gradient(135deg,#2450E8,#7B3FE4)">
+               <div class="bar"><i></i><i style="--c1:#FEBC2E"></i><i
+                     style="--c1:#28C840"></i><span>newmika.com.ph</span></div>
+               <div class="scr"><img src="sites/newmika.jpg" alt="Screenshot of the newmika website"></div>
+               <div class="tx">
+                  <p>Corporate website with a product catalog that helps customers browse the range. Now Mikasa
+                     Laminates, still on the NewMika address.</p><a href="https://www.newmika.com.ph/" target="_blank"
+                     rel="noopener">visit site →</a>
+               </div>
+            </div>
+            <div class="win" style="--g:linear-gradient(135deg,#6F4E37,#C98B4E)">
+               <div class="bar"><i></i><i style="--c1:#FEBC2E"></i><i
+                     style="--c1:#28C840"></i><span>coffeecentral.ph</span></div>
+               <div class="scr"><img src="sites/coffeecentral.jpg" alt="Screenshot of the coffeecentral website"></div>
+               <div class="tx">
+                  <p>E-commerce site with product browsing and a checkout flow.</p><a href="https://coffeecentral.ph"
+                     target="_blank" rel="noopener">visit site →</a>
+               </div>
+            </div>
+            <div class="win" style="--g:linear-gradient(135deg,#E8590C,#F2A93B)">
+               <div class="bar"><i></i><i style="--c1:#FEBC2E"></i><i style="--c1:#28C840"></i><span>Buildrite Hardware
+                     Supply</span></div>
+               <div class="scr"><img src="sites/buildrite.jpg" alt="Screenshot of the buildrite website"></div>
+               <div class="tx">
+                  <p>Product-focused site with inventory details and a store locator.</p>
+                  <p><b>Status:</b> staging build, unfinished.</p>
+               </div>
+            </div>
+            <div class="win" style="--g:linear-gradient(135deg,#0B7A5B,#27B488)">
+               <div class="bar"><i></i><i style="--c1:#FEBC2E"></i><i style="--c1:#28C840"></i><span>RoLin
+                     Leasing</span></div>
+               <div class="scr"><img src="sites/rolin.jpg" alt="Screenshot of the rolin website"></div>
+               <div class="tx">
+                  <p>Corporate website that explains the company’s leasing services.</p>
+                  <p><b>Status:</b> unfinished build.</p>
+               </div>
+            </div>
+         </div>
+      </div>
+   </main>
+
+   <!-- ================= OTHER PAGES (hidden until opened) ================= -->
+   <!-- PAGE: MY STORY (opened by the "read my story" button). EDIT HERE: the five scenes. -->
+   <main class="view sec grid" id="v-about" hidden>
+      <div class="in">
+         <a class="back" href="#home">← back to portfolio</a>
+         <h2 class="big">my <b>story 📖</b></h2>
+         <p class="lead">A short one, told in five scenes. Expect a lot of websites, a lot of network diagrams, and a
+            growing pile of badges.</p>
+         <div class="soc" id="soc2"></div>
+         <div class="story">
+            <article class="ch">
+               <div class="pol">🧑‍💻<small>scene one</small></div>
+               <div class="tx">
+                  <h3>the intern who stuck around</h3>
+                  <p>It began at Lexton Commercial Marketing Corporation, where I joined as an intern building websites.
+                     I contributed to enough projects that the company absorbed me into the team.</p>
+               </div>
+            </article>
+            <article class="ch">
+               <div class="pol">📡<small>scene two</small></div>
+               <div class="tx">
+                  <h3>from pixels to packets</h3>
+                  <p>In October 2024 I moved into technical pre-sales at Pronet. Over two years, I turned client
+                     problems into solutions across networking and security projects. The canvas changed from web pages
+                     to network designs.</p>
+               </div>
+            </article>
+            <article class="ch">
+               <div class="pol">🧾<small>scene three</small></div>
+               <div class="tx">
+                  <h3>collecting receipts</h3>
+                  <p>From July 2025 I started collecting vendor certifications: H3C, Kaspersky, Fortinet, LG, Hanwha,
+                     and RUCKUS. Together they cover presales, cybersecurity, LED displays, CCTV, and networking. The
+                     full pile is in the receipts section.</p>
+               </div>
+            </article>
+            <article class="ch">
+               <div class="pol">⏳<small>scene four</small></div>
+               <div class="tx">
+                  <h3>currently loading…</h3>
+                  <ul class="st">
+                     <li><b>reviewing</b>Microsoft Azure certification</li>
+                     <li><b>up next</b>AWS AI Practitioner</li>
+                     <li><b>earning</b>Google Cloud skill badges, through Google Cloud Learn with Communities and
+                        GeeksforGeeks</li>
+                     <li><b>pending</b>CTIA Level III, training done, certificate on the way</li>
+                  </ul>
+               </div>
+            </article>
+            <article class="ch">
+               <div class="pol">🥾<small>scene five</small></div>
+               <div class="tx">
+                  <h3>off the clock</h3>
+                  <p>Hiking and running. They keep me disciplined and focused, and that carries over to everything else.
+                  </p>
+               </div>
+            </article>
+         </div>
+         <div class="two" style="margin-top:50px">
+            <div class="box">
+               <h3>user manual: rose</h3>
+               <ul>
+                  <li>Runs on: being results-driven and adaptable</li>
+                  <li>Works best: independently, with minimal supervision</li>
+                  <li>Plays well with: technical implementation, engineering, sales, and purchasing teams</li>
+               </ul>
+            </div>
+            <div class="box">
+               <h3>currently looking for</h3>
+               <ul>
+                  <li>Entry- to mid-level IT support, infrastructure, or security roles</li>
+                  <li>Virtual assistance and tech support work</li>
+               </ul>
+            </div>
+         </div>
+      </div>
+   </main>
+
+   <!-- PAGE: VA AND TECH SUPPORT -->
+   <main class="view sec grid" id="v-va" hidden>
+      <div class="in">
+         <a class="back" href="#home">← back to portfolio</a>
+         <h2 class="big">VA and <b>tech support 💬</b></h2>
+         <p class="lead">I’m exploring virtual assistance and tech support as my next chapter and would love to dive
+            into both soon. This page will grow as I do.</p>
+         <div class="two">
+            <div class="box">
+               <h3>what I bring</h3>
+               <ul>
+                  <li>Detail-oriented and highly accurate</li>
+                  <li>Strong organization and time management</li>
+                  <li>Clear communication with engineering, sales, and purchasing teams</li>
+                  <li>Handling multiple projects with minimal supervision</li>
+                  <li>Quick learner with a proactive mindset</li>
+               </ul>
+            </div>
+            <div class="box">
+               <h3>virtual assistance</h3>
+               <ul>
+                  <li>Admin and data support</li>
+                  <li>Research and AI-assisted tasks</li>
+                  <li>Website support with WordPress and WooCommerce</li>
+               </ul>
+            </div>
+            <div class="box">
+               <h3>tech support</h3>
+               <ul>
+                  <li>Helping users with Wi-Fi, networking, and security basics</li>
+                  <li>Training in RUCKUS, NETGEAR, Fortinet, and Kaspersky</li>
+                  <li>Building hands-on experience</li>
+               </ul>
+            </div>
+         </div>
+         <p style="margin-top:34px">Services and samples: coming soon.</p>
+      </div>
+   </main>
+
+   <!-- PAGE: EDUCATION and academic projects (the project cards are filled in by the PROJ list in the script) -->
+   <main class="view sec grid" id="v-education" hidden>
+      <div class="in">
+         <a class="back" href="#home">← back to portfolio</a>
+         <h2 class="big">the <b>journey 🎓</b></h2>
+         <p class="lead">From a computer programming strand to a Cum Laude IT degree.</p>
+         <div class="tl">
+            <div class="it">
+               <h3>CTIA NC III | 2026</h3>
+               <p>Cyber Threat Intelligence Analysis, AMA University, TESDA-recognized.</p>
+               <p>Training completed; certificate pending graduation.</p>
+            </div>
+            <div class="it">
+               <h3>BS Information Technology | 2024</h3>
+               <p>Technological University of the Philippines – Manila.</p>
+               <p>GPA 1.485, Cum Laude. Civil Service Professional (HGE) certification.</p>
+               <p>Thesis: Smart Water Guard: Water Quality Monitoring.</p>
+            </div>
+            <div class="it">
+               <h3>TVL-ICT Computer Programming | 2020</h3>
+               <p>AMA Computer Learning Center, College of Meycauayan.</p>
+               <p>GPA 96.50, With High Honors.</p>
+            </div>
+         </div>
+         <h2 class="big" style="margin-top:70px">academic <b>projects 💾</b></h2>
+         <p class="lead">Projects from my college years. The code lives on GitHub.</p>
+         <div class="two" id="proj"></div>
+         <div id="gh" style="margin-top:26px">
+         </div>
+      </div>
+   </main>
+
+   <!-- CERTIFICATE POPUP: empty on purpose. The script fills it in when a receipt line is clicked. -->
+   <dialog id="dlg" aria-label="Certificate details"></dialog>
+   <!-- ================= THE CODE (JavaScript) ================= -->
+   <script>
+      // PAGE NAMES: every extra page must be listed here, and its <main> id must be "v-" plus the name.
+      var V = ['presales', 'webdesign', 'education', 'about', 'va'];
+      // PAGE SWITCHING: shows the home page or one extra page depending on the link that was clicked.
+      function route(x) {
+         var h = x !== undefined ? x : location.hash.slice(1), v = V.indexOf(h) > -1 ? h : null;
+         document.getElementById('home').hidden = !!v;
+         V.forEach(function (x) {document.getElementById('v-' + x).hidden = x !== v});
+         if (v) {window.scrollTo(0, 0)} else if (h) {var t = document.getElementById(h); if (t) t.scrollIntoView()}
+      }
+      addEventListener('hashchange', function () {route()}); route();
+      document.addEventListener('click', function (e) {var a = e.target.closest && e.target.closest('a[href^="#"]'); if (!a) return; var h = a.getAttribute('href').slice(1); if (!h) return; e.preventDefault(); try {location.hash = h} catch (_) { } route(h)});
+      // TECH STACK TAGS. EDIT HERE: each category name has a list of tags. Add or remove tags inside the square brackets.
+      var ST = {"Networking": ["Wi-Fi design (RUCKUS)", "SmartZone controllers", "RUCKUS ICX switching", "RUCKUS One cloud management", "Zyxel Nebula", "Zyxel switching", "EnGenius access points", "NETGEAR managed switches", "AV over IP switching", "SASE and network security", "Grandstream networking", "VoIP and unified communications", "H3C networking solutions", "Site surveys", "Ekahau heatmaps", "Network design"], "Security": ["FortiGate basics", "Fortinet Security Fabric", "Next-generation firewall concepts", "Web application and API security", "Threat landscape", "Kaspersky EDR", "KATA investigation", "Secure mail gateway", "SD-WAN", "Threat intelligence (CTIA)", "MITRE ATT&CK", "Diamond Model", "Cyber Kill Chain", "OSINT and IoCs", "MISP and STIX 2.1", "Analysis of Competing Hypotheses"], "Surveillance and displays": ["CCTV (Hanwha Wisenet)", "Access control (Suprema BioStar 2)", "LED display systems (LG, NovaStar)", "Video walls and digital signage"], "Pre-sales": ["Requirements analysis", "Solution design", "Site surveys", "Technical specifications", "BOMs", "Bid proposals", "H3C sales engineering"], "Web": ["WordPress", "WooCommerce", "Elementor", "WordPress blogs and full websites", "Website mapping (Jumpchart)", "HTML5", "CSS3", "JavaScript", "React.js", "Node.js", "PHP", "Express.js"], "Data and code": ["SQL", "MySQL", "MongoDB (CRUD, document model)", "SQL to NoSQL modeling", "Microsoft Fabric (lakehouses, warehouses)", "Real-Time Intelligence", "Semantic models", "Microsoft Excel (sorting, filtering, analysis)", "Excel project trackers", "Python", "Java", "C++", "C#", "VB.NET", "Arduino", "Git", "VS Code", "Postman"], "Cloud and AI": ["Google Cloud IAM", "Compute Engine basics", "Speech and Language APIs", "Cloud concepts (Azure)", "Azure Functions (Node.js REST API)", "AZ-900 in prep", "AI fundamentals (IBM)", "Microsoft Fabric IQ"], "VA and marketing": ["Virtual assistant fundamentals", "Microsoft Excel", "Excel project trackers", "Canva design", "Google Ads basics", "WordPress content", "Website mapping", "Project tracking"]};
+      // TABS: builds the category buttons (tech stack and receipts). You normally do not touch this.
+      function tabs(el, names, cb) {
+         el.innerHTML = ''; names.forEach(function (n, i) {
+            var b = document.createElement('button'); b.textContent = n; b.setAttribute('aria-pressed', i == 0);
+            b.onclick = function () {[].forEach.call(el.children, function (c) {c.setAttribute('aria-pressed', c === b)}); cb(n)}; el.appendChild(b)
+         }); cb(names[0])
+      }
+      tabs(document.getElementById('tabs'), Object.keys(ST), function (k) {
+         var c = document.getElementById('chips'); c.innerHTML = '';
+         ST[k].forEach(function (t, i) {var s = document.createElement('span'); s.className = 'chip'; s.textContent = t; s.style.setProperty('--r', (i % 2 ? 1 : -1) * .8 + 'deg'); s.style.animationDelay = i * 40 + 'ms'; c.appendChild(s)})
+      });
+      // CERTIFICATE IMAGES: null means the images are loaded from the certs/ folder (certs/p01.jpg and so on).
+      var IM = null;
+      // CERTIFICATE LIST. EDIT HERE: one {...} per receipt line. g = category tab, e = emoji, t = title, i = issuer,
+      // d = date text, id = certificate ID, v = verification link (leave out if none), im = image file name in certs/.
+      var C = [{"g": "Google Cloud", "e": "🗣️", "t": "Implement Speech and Language Solutions with Pre-trained APIs", "i": "Google Cloud Skills Boost", "d": "Skill badge, earned Oct 23, 2026", "v": "https://www.skills.google/public_profiles/8d14eaa0-6905-4ec8-95a6-d1b0329cd0a8/badges/29054622"}, {"g": "Google Cloud", "e": "🔐", "t": "Configure Service Accounts and IAM Roles for Google Cloud", "i": "Google Cloud Skills Boost", "d": "Skill badge, earned Oct 22, 2026", "v": "https://www.skills.google/public_profiles/8d14eaa0-6905-4ec8-95a6-d1b0329cd0a8/badges/29031782"}, {"g": "Google Cloud", "e": "🖥️", "t": "The Basics of Google Cloud Compute", "i": "Google Cloud Skills Boost", "d": "Skill badge, earned Oct 22, 2026", "v": "https://www.skills.google/public_profiles/8d14eaa0-6905-4ec8-95a6-d1b0329cd0a8/badges/29029188"}, {"g": "Google Cloud", "e": "🌐", "t": "Build a Certification Study Guide: PCNE Exam Prep", "i": "Google Cloud Skills Boost", "d": "Completion badge, earned Oct 22, 2026", "v": "https://www.skills.google/public_profiles/8d14eaa0-6905-4ec8-95a6-d1b0329cd0a8/badges/29034610"}, {"g": "Microsoft", "e": "🧵", "t": "Get started with Microsoft Fabric", "i": "Microsoft Learn", "d": "Learning achievement", "v": "https://learn.microsoft.com/api/achievements/share/en-us/rsdlcncpcn/H2GQYNR8?sharingId=C671A71D9266E3B2"}, {"g": "Microsoft", "e": "🏞️", "t": "Get started with lakehouses in Microsoft Fabric", "i": "Microsoft Learn", "d": "Learning achievement", "v": "https://learn.microsoft.com/api/achievements/share/en-us/rsdlcncpcn/NQGLXTTF?sharingId=C671A71D9266E3B2"}, {"g": "Microsoft", "e": "🏭", "t": "Get started with data warehouses in Microsoft Fabric", "i": "Microsoft Learn", "d": "Learning achievement", "v": "https://learn.microsoft.com/api/achievements/share/en-us/rsdlcncpcn/9AD5NE7U?sharingId=C671A71D9266E3B2"}, {"g": "Microsoft", "e": "⚡", "t": "Get started with Real-Time Intelligence in Microsoft Fabric", "i": "Microsoft Learn", "d": "Learning achievement", "v": "https://learn.microsoft.com/api/achievements/share/en-us/rsdlcncpcn/H2SC6Q38?sharingId=C671A71D9266E3B2"}, {"g": "Microsoft", "e": "📊", "t": "Introduction to end-to-end analytics using Microsoft Fabric", "i": "Microsoft Learn", "d": "Learning achievement", "v": "https://learn.microsoft.com/api/achievements/share/en-us/rsdlcncpcn/EGYFZ3ZP?sharingId=C671A71D9266E3B2"}, {"g": "Microsoft", "e": "🔬", "t": "Get started with data science in Microsoft Fabric", "i": "Microsoft Learn", "d": "Learning achievement", "v": "https://learn.microsoft.com/api/achievements/share/en-us/rsdlcncpcn/WMLUHA6N?sharingId=C671A71D9266E3B2"}, {"g": "Microsoft", "e": "🗄️", "t": "Get started with SQL Database in Microsoft Fabric", "i": "Microsoft Learn", "d": "Learning achievement", "v": "https://learn.microsoft.com/api/achievements/share/en-us/rsdlcncpcn/3ZT3FGSH?sharingId=C671A71D9266E3B2"}, {"g": "Microsoft", "e": "🧠", "t": "Design semantic models for scale in Microsoft Fabric", "i": "Microsoft Learn", "d": "Learning achievement", "v": "https://learn.microsoft.com/api/achievements/share/en-us/rsdlcncpcn/AB8JULT7?sharingId=C671A71D9266E3B2"}, {"g": "Microsoft", "e": "💡", "t": "Understand Microsoft Fabric IQ fundamentals", "i": "Microsoft Learn", "d": "Learning achievement", "v": "https://learn.microsoft.com/api/achievements/share/en-us/rsdlcncpcn/FEUKZRVX?sharingId=C671A71D9266E3B2"}, {"g": "Microsoft", "e": "☁️", "t": "Describe cloud computing", "i": "Microsoft Learn", "d": "Learning achievement", "v": "https://learn.microsoft.com/api/achievements/share/en-us/rsdlcncpcn/ABW5R8S7?sharingId=C671A71D9266E3B2"}, {"g": "Microsoft", "e": "🌤️", "t": "Describe the benefits of using cloud services", "i": "Microsoft Learn", "d": "Learning achievement", "v": "https://learn.microsoft.com/api/achievements/share/en-us/rsdlcncpcn/U75CWMZ3?sharingId=C671A71D9266E3B2"}, {"g": "Microsoft", "e": "🧩", "t": "Describe cloud service types", "i": "Microsoft Learn", "d": "Learning achievement", "v": "https://learn.microsoft.com/api/achievements/share/en-us/rsdlcncpcn/CRTGN7U9?sharingId=C671A71D9266E3B2"}, {"g": "Microsoft", "e": "🌩️", "t": "Introduction to Cloud Infrastructure: Describe cloud concepts", "i": "Microsoft Learn", "d": "Learning achievement", "v": "https://learn.microsoft.com/api/achievements/share/en-us/rsdlcncpcn/3ZL9YVWH?sharingId=C671A71D9266E3B2"}, {"g": "IBM", "e": "🤖", "t": "Artificial Intelligence Fundamentals", "i": "IBM SkillsBuild", "d": "Issued May 20, 2025", "v": "https://www.credly.com/badges/c7f61569-e086-45ba-be83-28335c97dc15/public_url", "im": "p37"}, {"g": "IBM", "e": "🕸️", "t": "Web Development Fundamentals", "i": "IBM SkillsBuild", "d": "Issued May 27, 2025", "v": "https://www.credly.com/badges/0e3ae8a3-f0dc-4dd1-bf79-d104d95fa055/public_url", "im": "p38"}, {"g": "Cybersecurity", "e": "🛡️", "t": "Certified Professional: KATA Investigation (057.7)", "i": "Kaspersky", "d": "Issued Jan 27, 2026", "id": "057.7-188910", "im": "p12"}, {"g": "Cybersecurity", "e": "🛡️", "t": "Certified Professional: Kaspersky Secure Mail Gateway (036.2.1)", "i": "Kaspersky", "d": "Issued Jan 27, 2026", "id": "036.2.1-188933", "im": "p13"}, {"g": "Cybersecurity", "e": "🛡️", "t": "Certified Professional: Kaspersky SD-WAN (004.2.1)", "i": "Kaspersky", "d": "Issued Jan 27, 2026", "id": "004.2.1-188917", "im": "p14"}, {"g": "Cybersecurity", "e": "🛡️", "t": "Certified Professional: KATA & EDR Administration (025.7)", "i": "Kaspersky", "d": "Issued Jan 28, 2026", "id": "025.7-189122", "im": "p15"}, {"g": "Cybersecurity", "e": "🛡️", "t": "Certified Professional: KATA & EDR Expert Presales (P25.5)", "i": "Kaspersky", "d": "Issued Jun 27, 2025", "id": "P25.5-148088", "im": "p16"}, {"g": "Cybersecurity", "e": "🛡️", "t": "Certified Professional: Kaspersky Next EDR Foundations (046.12.7)", "i": "Kaspersky", "d": "Issued Jun 27, 2025", "id": "046.12.7-148085", "im": "p17"}, {"g": "Cybersecurity", "e": "🧱", "t": "Fortinet Certified Associate in Cybersecurity", "i": "Fortinet", "d": "Achieved Jun 19, 2025, valid until Jun 19, 2027", "id": "8117183784RC", "v": "https://www.credly.com/badges/3da5dcce-6181-4e6d-9f0a-fa362cac8dee/public_url", "im": "p31"}, {"g": "Cybersecurity", "e": "🧱", "t": "Fortinet Certified Fundamentals in Cybersecurity", "i": "Fortinet", "d": "Achieved Aug 7, 2025, valid until Aug 7, 2027", "id": "5759519883RC", "v": "https://www.credly.com/badges/26562fc9-d471-4102-9c3f-4af67db3bf55/public_url", "im": "p30"}, {"g": "Cybersecurity", "e": "🔥", "t": "FastTrack: Creating a Comprehensive Security Fabric", "i": "Fortinet Training Institute", "d": "Completed Aug 12, 2025", "im": "p29"}, {"g": "Cybersecurity", "e": "🔥", "t": "FastTrack: Web Application and API Security (Cloud Security)", "i": "Fortinet Training Institute", "d": "Completed Aug 20, 2025", "im": "p28"}, {"g": "Cybersecurity", "e": "🔥", "t": "Getting Started in Cybersecurity 3.0", "i": "Fortinet badge on Credly", "v": "https://www.credly.com/badges/050df05d-ccda-497f-9d5c-d31a9ebe7fbd/public_url"}, {"g": "Cybersecurity", "e": "🌩️", "t": "Introduction to the Threat Landscape 3.0", "i": "Fortinet badge on Credly", "v": "https://www.credly.com/badges/fbd551a5-d788-43c7-806c-c91c620f6305/public_url"}, {"g": "Cybersecurity", "e": "🚪", "t": "FortiGate 7.4 Operator", "i": "Fortinet badge on Credly", "v": "https://www.credly.com/badges/97b6045d-759c-46ac-beae-7c7ade833ca3/public_url"}, {"g": "Cybersecurity", "e": "1️⃣", "t": "NSE 1 Certified in Cybersecurity", "i": "Fortinet badge on Credly", "v": "https://www.credly.com/badges/8a4b69ac-2579-4e3e-918c-9de6bd092115/public_url"}, {"g": "Cybersecurity", "e": "2️⃣", "t": "NSE 2 Certified in Cybersecurity", "i": "Fortinet badge on Credly", "v": "https://www.credly.com/badges/c065a076-1666-4e87-8e8d-bfe70f1ba8c4/public_url"}, {"g": "Cybersecurity", "e": "3️⃣", "t": "NSE 3 Certified in Cybersecurity", "i": "Fortinet badge on Credly", "v": "https://www.credly.com/badges/dc9a37fb-faca-4041-a1e7-ae2d52ec9456/public_url"}, {"g": "Networking", "e": "📶", "t": "RUCKUS Accredited Wi-Fi Designer", "i": "RUCKUS (CommScope)", "d": "Valid Dec 1, 2025 to Dec 1, 2028", "id": "168094098", "im": "p18", "v": "https://www.credential.net/46dd8e61-ee6b-439e-b3d2-86e1ec928574#acc.u693mwBW"}, {"g": "Networking", "e": "📶", "t": "RUCKUS Accredited Support Professional", "i": "RUCKUS (CommScope)", "d": "Valid Nov 28, 2025 to Nov 28, 2028", "id": "167816467", "im": "p19", "v": "https://www.credential.net/2360925a-3ac0-4e45-bce6-4a2e7352463a#acc.VqDTc8MW"}, {"g": "Networking", "e": "📶", "t": "RUCKUS Accredited SmartZone Administrator", "i": "RUCKUS (CommScope)", "d": "Valid Nov 28, 2025 to Nov 28, 2028", "id": "167816407", "im": "p20", "v": "https://www.credential.net/be5a9a97-7a13-4c80-8b0b-a1b826124511#acc.iALroFsp"}, {"g": "Networking", "e": "📶", "t": "RUCKUS One Implementer", "i": "RUCKUS (CommScope)", "d": "Valid Nov 28, 2025 to Nov 28, 2028", "id": "167814652", "im": "p21", "v": "https://www.credential.net/fe96403a-c320-4034-a75e-4820adf914dd#acc.GrIUvJl0"}, {"g": "Networking", "e": "📶", "t": "RUCKUS Accredited ICX Implementer", "i": "RUCKUS (CommScope)", "d": "Valid Nov 28, 2025 to Nov 28, 2028", "id": "167816506", "im": "p22", "v": "https://www.credential.net/dba89eeb-05bd-47a2-97ef-cfd2080f48f8#acc.ev3bTQpk"}, {"g": "Networking", "e": "🔌", "t": "NETGEAR: SASE Admin: Network and Cloud Security", "i": "NETGEAR Academy", "d": "Completed Mar 17, 2026", "id": "VzScOJI9yY", "v": "https://academy.netgear.com/badges/badge.php?hash=4297c6a5db3bdc03c1b608495adcc5196fd19612", "im": "p23"}, {"g": "Networking", "e": "🔌", "t": "NETGEAR: SASE Pro: Network and Cloud Security", "i": "NETGEAR Academy", "d": "Completed Mar 17, 2026", "id": "FN8YOBOPej", "v": "https://academy.netgear.com/badges/badge.php?hash=ac89569be309714f1fe6803e30fb2765ca65f82b", "im": "p24"}, {"g": "Networking", "e": "🔌", "t": "NETGEAR: AV Managed Switches", "i": "NETGEAR Academy", "d": "Completed Mar 11, 2026", "id": "74FL34BvWO", "v": "https://academy.netgear.com/badges/badge.php?hash=5a49d991b4cff9d56b7375e4f0b781909c866498", "im": "p25"}, {"g": "Networking", "e": "🔌", "t": "NETGEAR: Switching for AVoIP", "i": "NETGEAR Academy", "d": "Completed Mar 16, 2026", "id": "MT8L6MG5EX", "v": "https://academy.netgear.com/badges/badge.php?hash=5563178fa78cca514b66f4668b9cd70691125084", "im": "p26"}, {"g": "Networking", "e": "🔌", "t": "NETGEAR: Networking Basics", "i": "NETGEAR Academy", "d": "Completed Mar 11, 2026", "id": "1JaKnUpT0A", "v": "https://academy.netgear.com/badges/badge.php?hash=70cfc1f54e0857697bb83de541b10412556273be", "im": "p27"}, {"g": "Networking", "e": "🌐", "t": "Zyxel Certified Network Associate (ZCNA) in Nebula", "i": "Zyxel", "d": "Issued Mar 30, 2026, valid 2 years", "id": "69ca5320d5b9775b21068c7a", "v": "https://mycourse.app/DhERnDSf3qvOnHzu9", "im": "p07"}, {"g": "Networking", "e": "🌐", "t": "Zyxel Certified Network Associate (ZCNA) in Switch", "i": "Zyxel", "d": "Issued Mar 13, 2026, valid 2 years", "id": "69b39d628dc056234f0043e2", "v": "https://mycourse.app/JhsVcfKei8W9RPbgA", "im": "p08"}, {"g": "Networking", "e": "📡", "t": "EnGenius Certified Network Specialist (ECNS)", "i": "EnGenius", "d": "Certified Mar 6, 2026", "id": "69aaadacbf2584edb20976a7", "im": "p09"}, {"g": "Networking", "e": "☎️", "t": "Grandstream Certified Specialist: UC Solution", "i": "Grandstream", "d": "Issued Jun 17, 2025, valid through Jun 17, 2026", "id": "GSAEF3398B2A23", "im": "p32"}, {"g": "Networking", "e": "☎️", "t": "Grandstream Certified Specialist: Networking Solution", "i": "Grandstream", "d": "Issued Sep 3, 2025, valid through Sep 3, 2026", "id": "GSA20424A2C213", "im": "p33"}, {"g": "Networking", "e": "🧭", "t": "Certified H3C Sales Engineer: HSE Industry L3 Expert", "i": "H3C", "d": "Valid May 7, 2026 to May 7, 2027", "id": "HSEL3000145", "im": "p01"}, {"g": "Networking", "e": "🧭", "t": "Certified H3C Sales Engineer: HSE Industry IT L2 Specialist", "i": "H3C", "d": "Valid May 7, 2026 to May 7, 2027", "id": "HSEIT2000146", "im": "p02"}, {"g": "Networking", "e": "🧭", "t": "Certified H3C Sales Engineer: HSE Industry CT L2 Specialist", "i": "H3C", "d": "Valid May 6, 2026 to May 6, 2027", "id": "HSEL2000329", "im": "p03"}, {"g": "Networking", "e": "🧭", "t": "Certified H3C Sales Engineer: HSE SMB L1 Generalist", "i": "H3C", "d": "Valid May 7, 2026 to May 7, 2028", "id": "HSEL1S000349", "im": "p04"}, {"g": "Networking", "e": "🧭", "t": "Certified H3C Sales Engineer: HSE Industry L1 Generalist", "i": "H3C", "d": "Valid Jul 10, 2025 to Jul 10, 2027", "id": "HSE-L1000028", "im": "p05"}, {"g": "Security and displays", "e": "📹", "t": "Wisenet Pro", "i": "Hanwha Vision", "d": "Issued Apr 1, 2026, valid 2 years", "id": "Ref 2026-PH41C-003", "im": "p06"}, {"g": "Security and displays", "e": "📺", "t": "NCE Certificate of LED Screen Technician", "i": "NovaStar", "d": "Issued Mar 6, 2026, valid 2 years", "id": "2026IZZ0564", "v": "https://nce.novastar.tech/", "im": "p10"}, {"g": "Security and displays", "e": "📺", "t": "Technical Training for LED Display System", "i": "LG (through Pronet Systems)", "d": "Completed Mar 4, 2026", "im": "p11"}, {"g": "Data and code", "e": "🍃", "t": "MongoDB Overview: Core Concepts and Architecture", "i": "MongoDB", "d": "Mar 14, 2026", "v": "https://www.credly.com/badges/e89602be-9a17-425b-baad-fdd04d54adc5/public_url", "im": "p34"}, {"g": "Data and code", "e": "🍃", "t": "From Relational Model (SQL) to MongoDB's Document Model", "i": "MongoDB", "d": "Mar 16, 2026", "v": "https://www.credly.com/badges/5918da4c-6593-408e-84c7-fbe66b9347fa/public_url", "im": "p35"}, {"g": "Data and code", "e": "🍃", "t": "CRUD Operations in MongoDB", "i": "MongoDB", "d": "Mar 15, 2026", "v": "https://www.credly.com/badges/de335f1f-eb58-4b54-8ecd-0d219aa31613/public_url", "im": "p36"}, {"g": "Coursera", "e": "🗺️", "t": "Build a Website Map with Jumpchart", "i": "Coursera", "d": "Project certificate, completed May 2025", "v": "https://coursera.org/share/2a0d343095add8b2cb34090582d159d2"}, {"g": "Coursera", "e": "📋", "t": "Create a Project Management Tracker using Microsoft Excel", "i": "Coursera", "d": "Project certificate, completed May 2025", "v": "https://coursera.org/share/e18cb9e178eb4e136d6d6af6f2149e27"}, {"g": "Coursera", "e": "📊", "t": "Introduction to Data Analysis using Microsoft Excel", "i": "Coursera", "d": "Project certificate, completed May 2025", "v": "https://coursera.org/share/95047fca4cda3657d2a92d02ba239baa"}, {"g": "Coursera", "e": "☁️", "t": "Azure: create a REST API using NodeJS Serverless Functions", "i": "Coursera", "d": "Project certificate, completed May 2025", "v": "https://coursera.org/share/b9e14de3d612f115700a0135f7a16804"}, {"g": "Coursera", "e": "🔎", "t": "Finding, Sorting, & Filtering Data in Microsoft Excel", "i": "Coursera", "d": "Project certificate, completed May 2025", "v": "https://coursera.org/share/f9381fd9039ec23b73d4b2eb5233244c"}, {"g": "Coursera", "e": "📗", "t": "Getting Started with Microsoft Excel", "i": "Coursera", "d": "Project certificate, completed May 2025", "v": "https://coursera.org/share/f8309f8a08197063019b3322285328e8"}, {"g": "Coursera", "e": "🐍", "t": "Create Your First Python Program From UST", "i": "Coursera", "d": "Project certificate, completed May 2025", "v": "https://coursera.org/share/959cff11b443dec42681d096bf0f1230"}, {"g": "Coursera", "e": "✍️", "t": "Use WordPress to Create a Blog for your Business", "i": "Coursera", "d": "Project certificate, completed May 2025", "v": "https://coursera.org/share/e193cd341dbbba100dc10b8fc2123c1e"}, {"g": "Coursera", "e": "🌐", "t": "Build a Full Website using WordPress", "i": "Coursera", "d": "Project certificate, completed May 2025", "v": "https://coursera.org/share/282c42d75f27aef641b90be54735a37d"}, {"g": "Coursera", "e": "📣", "t": "Google Ads for Beginners", "i": "Coursera", "d": "Project certificate, completed May 2025", "v": "https://coursera.org/share/e657889d7c99f026cd03e28277c6c599"}, {"g": "Coursera", "e": "🎨", "t": "Use Canva to Design Digital Course Collateral", "i": "Coursera", "d": "Project certificate, completed May 2025", "v": "https://coursera.org/share/5d3ac7631b2d0a466c1202cec3ae0dd4"}, {"g": "Coursera", "e": "🆓", "t": "Build a free website with WordPress", "i": "Coursera", "d": "Project certificate, completed May 2025", "v": "https://coursera.org/share/fa334b988840e9bab321c12d27222188"}, {"g": "More", "e": "💬", "t": "Working as a Virtual Assistant", "i": "Alison", "d": "Course completed Oct 29, 2026"}, {"g": "More", "e": "🧠", "t": "Riot IQ test (OnlineJobs): score 92, top 70%", "i": "Riot IQ", "d": "Taken Oct 13, 2026. IQ range 92 ±4.9", "v": "https://www.riotiq.com/app/share/c52b1f17-e03d-4d92-922f-ea5bc9b991d0?email=rsdlcncpcn%40gmail.com"}];
+      // CATEGORY COLORS used by the receipt tabs (names must match the g values above).
+      var COL = {"Google Cloud": "#4F8BFF", "Microsoft": "#33C1F5", "IBM": "#7B9CFF", "Cybersecurity": "#FB62D8", "Networking": "#7CE38B", "Security and displays": "#FFC857", "Data and code": "#B79BFF", "Coursera": "#FFB86B", "More": "#FF9F7A"};
+      // SOCIAL LINKS. EDIT HERE: GH is your GitHub address. In SOC, each pair is [button name, link]. A pair with an empty link is hidden.
+      var GH = 'https://github.com/rsdlcncpcn';
+      var SOC = [['Email', 'mailto:rsdlcncpcn@gmail.com'], ['LinkedIn', 'https://www.linkedin.com/in/rosedel-concepcion/'], ['GitHub', GH], ['Instagram', 'https://www.instagram.com/dlxrose/'], ['WhatsApp', 'https://wa.me/639311768450']];
+      ['soc1', 'soc2', 'soc3'].forEach(function (id) {var w = document.getElementById(id); SOC.forEach(function (s) {if (!s[1]) return; var a = document.createElement('a'); a.textContent = s[0]; a.href = s[1]; if (s[1].indexOf('mailto') < 0) {a.target = '_blank'; a.rel = 'noopener'} w.appendChild(a)})});
+      // ACADEMIC PROJECTS (Education page). EDIT HERE: add [name, description, GitHub link] for each project.
+      var PROJ = [['Smart Water Guard', 'Undergraduate thesis: a water quality monitoring system.', '']];
+      var pw = document.getElementById('proj');
+      PROJ.concat([['More on the way', 'Other academic projects will be added here.', '']]).forEach(function (p) {var d = document.createElement('div'); d.className = 'box'; d.innerHTML = '<h3>' + p[0] + '</h3><p>' + p[1] + '</p>' + (p[2] ? '<a class="btn" href="' + p[2] + '" target="_blank" rel="noopener">view code →</a>' : ''); pw.appendChild(d)});
+      document.getElementById('gh').innerHTML = GH ? '<a class="btn" href="' + GH + '" target="_blank" rel="noopener">see all projects on GitHub →</a>' : 'GitHub link coming soon.';
+      function src(k) {return IM ? IM[k] : 'certs/' + k + '.jpg'}
+      function esc(x) {return String(x).replace(/[&<>"]/g, function (c) {return {'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}[c]})}
+      var dlg = document.getElementById('dlg');
+      dlg.addEventListener('click', function (e) {if (e.target === dlg) dlg.close()});
+      // POPUP: builds and opens the certificate popup, with a verify button if the certificate has a link.
+      function show(c) {
+         var h = '<div class="dl">';
+         if (c.im) h += '<img src="' + src(c.im) + '" alt="Certificate: ' + esc(c.t) + '">';
+         h += '<h3>' + esc(c.t) + '</h3><p>' + esc(c.i) + '</p>';
+         if (c.d) h += '<p>' + esc(c.d) + '</p>';
+         if (c.id) h += '<p>ID: ' + esc(c.id) + '</p>';
+         if (c.links) {h += '<div class="lk">' + c.links.map(function (u, i) {return '<a class="vb" href="' + esc(u) + '" target="_blank" rel="noopener">' + c.lab + ' ' + (i + 1) + ' →</a>'}).join('') + '</div>'}
+         else if (c.v) {h += '<div class="row"><a class="vb" href="' + esc(c.v) + '" target="_blank" rel="noopener">verify credential →</a></div>'}
+         else h += '<p class="no">No public verification link for this one.</p>';
+         h += '<div class="row"><button class="x" id="cx">close</button></div></div>';
+         dlg.innerHTML = h; document.getElementById('cx').onclick = function () {dlg.close()}; dlg.showModal()
+      }
+      // RECEIPT: builds the list of lines for the selected category.
+      function badges(g) {
+         var w = document.getElementById('badges'); w.innerHTML = '';
+         var list = C.filter(function (c) {return g == 'All' || c.g == g}), last = '';
+         w.innerHTML = '<div class="rh"><b>receipt of learning</b><span>' + (g == 'All' ? 'all items' : g.toLowerCase()) + '</span></div>';
+         list.forEach(function (c) {
+            if (g == 'All' && c.g != last) {last = c.g; var d = document.createElement('div'); d.className = 'rg'; d.textContent = c.g; w.appendChild(d)}
+            var b = document.createElement('button'); b.type = 'button'; b.className = 'rw'; var y = (c.d || '').match(/20\d\d/);
+            b.innerHTML = '<span class="rt">' + esc(c.t) + '<small>' + esc(c.i) + '</small></span><span class="rd">' + ((c.v || c.links) ? '✓ ' : '') + (y ? y[0] : '') + '</span>';
+            b.onclick = function () {show(c)}; w.appendChild(b)
+         });
+         var f = document.createElement('div'); f.className = 'rf'; f.innerHTML = '<span>items: ' + list.length + '</span><i class="bc"></i><span>thank you, come again</span>'; w.appendChild(f)
+      }
+      tabs(document.getElementById('btabs'), Object.keys(COL).concat(['All']), badges);
+   </script>
+</body>
+
+</html>
